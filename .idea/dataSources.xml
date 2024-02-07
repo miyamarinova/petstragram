@@ -8,7 +8,7 @@
       <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/db.sqlite3</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="petstagram" uuid="d7eeaa34-ec94-45e5-a82b-a73afbe85bb0">
+    <data-source source="LOCAL" name="Django default" uuid="0e1eccbe-a227-4a9a-b10c-0dd96f630d70">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
