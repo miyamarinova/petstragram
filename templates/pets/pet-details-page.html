@@ -8,13 +8,13 @@
             <div class="profile-data">
                 <div class="profile_img">
                     <div class="image">
-                        <img src="{{ pet.pet_photo }}"
+                        <img src="{{ object.pet_photo }}"
                              alt="img8">
                     </div>
                 </div>
                 <div class="personal">
                     <div class="edit">
-                        <p>{{ pet.name }}</p>
+                        <p>{{ object.name }}</p> 
                         <a href="{% url 'edit pet' username='mimi' pet_slug=pet.slug %}">
                             <img class="edit-img" src="{% static 'images/edit-pen-icon-6.jpg' %}" alt="edit button">
                         </a>
@@ -23,7 +23,7 @@
                         </a>
                     </div>
                     <div class="data">
-                        <span>{{ pet.petphoto_set.count }}</span>
+                        <span>{{ object.petphoto_set.count }}</span>
                         <p>photos</p>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
         </div>
 
         <div class="pet-posts">
-            {% include 'partials/pet_photos_list.html' with photo_list=pet.petphoto_set.all %}
+            {% include 'partials/pet-photo-list-item-card.html' with photo_list=pet.petphoto_set.all %}
         </div>
     </div>
 {% endblock %}

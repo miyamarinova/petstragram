@@ -1,8 +1,10 @@
 class ReadOnlyFieldsForMixin:
     readonly_fields = ()
+
     def _apply_readonly_on_fields(self):
-        for field_name in self.fields.items():
-            self.fields[field_name].widget.attrs["readonly"] = "readonly"
+        for field_name in self.readonly_fields_names():
+            self.fields[field_name].widget.attr["readonly"] = "readonly"
+            self.fields[field_name].widget.attrs["disabled"] = "disabled"
 
     @property
     def readonly_field_names(self):

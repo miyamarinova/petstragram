@@ -1,7 +1,8 @@
 from petstagram.common.models import PhotoLike
 from petstagram.pets.models import Pet
 from petstagram.photos.models import PetPhoto
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, resolve_url
+from pyperclip import copy
 
 
 # Create your views here.
@@ -32,4 +33,10 @@ def like_pet_photo(request, pk):
     else:
         #like
         PhotoLike.objects.create(pet_photo_id=pk)
+        # redirect to the last visited page
     return redirect(request.META.get('HTTP_REFERER') + f"#photo-{pk}")
+
+def share_pet_photo(request, pk):
+    # create link to be copied
+
+    copy(request.META['HTTP_HOST'] + resolve_url('details_photo', pet_photo_id=pk))

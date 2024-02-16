@@ -8,8 +8,8 @@
     <div class="edit-delete edit-photo">
         <h2>Delete pet</h2>
         <!-- Starts Delete Pet Form -->
-        <form action="{% url 'delete pet' username=username pet_slug=pet.slug %}" method="post">
-            {{ pet_form }}
+        <form action="{% url 'delete pet' username=username pet_slug=object.slug %}" method="post">
+            {{ form }}
             <!-- Delete Pet Button -->
             <button class="delete-btn" type="submit">Delete</button>
             <!-- Go Back Button -->

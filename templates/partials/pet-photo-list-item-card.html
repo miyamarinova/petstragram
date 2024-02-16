@@ -31,11 +31,12 @@
         </div>
     
         <div class="bottom">
+        
             <!-- like and share buttons -->
             <div class="actionBtns">
                 <div class="left">
 								<span class="heart">
-                                    <a href="{% url 'like_pet_photo' pk=photo.pk %}">
+                                    <a href="{% url 'like_pet_photo' pk=1 %}">
                                         {% if photo.photolike_set.count > 0 %}
                                             <i class="fa-solid fa-heart" style="color: #ed4040;"></i>
                                         {% else %}
@@ -66,7 +67,7 @@
             <!-- End Tagged Pets -->
 
             <!-- Link to Photo Details Page -->
-            <a href="{% url 'details photo' pk=photo.pk %}">
+            <a href="{% url 'details photo' pk=1 %}">
                 <h4 class="details">See details</h4>
             </a>
 
