@@ -2,8 +2,9 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views import generic as views
 
-from petstagram.photos.forms import PetPhotoCreateForm
+from petstagram.photos.forms import PetPhotoCreateForm, PetPhotoEditForm
 from petstagram.photos.models import PetPhoto
+
 
 class PetPhotoCreateView(views.CreateView):
     form_class = PetPhotoCreateForm
@@ -17,17 +18,23 @@ class PetPhotoCreateView(views.CreateView):
         })
 
 
-# Create your views here.
-#def create_photo(request):
-#    context={}
-#    return render(request, template_name='photos/photo-add-page.html',context=context)
+class PetPhotoDetailView(views.DetailView):
+    queryset = PetPhoto.objects.all() \
+        .prefetch_related("photolike_set") \
+        .prefetch_related("photocomment_set") \
+        .prefetch_related("pets")
 
-def details_photo(request, pk):
-    context = {
-        'pet_photo': PetPhoto.objects.get(pk=pk)
-    }
-    return render(request, 'photos/photo-details-page.html',context)
+    template_name = "photos/photo-details-page.html"
 
-def edit_photo(request, pk):
-    context={}
-    return render(request,template_name='photos/photo-edit-page.html',context=context)
+
+class PetPhotoEditView(views.UpdateView):
+    queryset = PetPhoto.objects.all() \
+        .prefetch_related("pets")
+
+    template_name = "photos/photo-edit-page.html"
+    form_class = PetPhotoEditForm
+
+    def get_success_url(self):
+        return reverse("details photo", kwargs={
+            "pk": self.object.pk,
+        })

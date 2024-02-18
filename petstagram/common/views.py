@@ -29,7 +29,7 @@ class IndexView(views.ListView):
 
     template_name = "common/home-page.html"
 
-    paginate_by = 1
+    paginate_by = 2
 
     @property
     def pet_name_pattern(self):
@@ -60,8 +60,9 @@ class IndexView(views.ListView):
 def like_pet_photo(request, pk):
     #pet_photo = PetPhoto.objects.get(pk=pk, user=request.user)
     #pet_photo = PetPhoto.objects.get(pk=pk)
-    pet_photo_like = (PhotoLike.objects \
-        .filter(pet_photo_id=pk) \
+
+    pet_photo_like = (PhotoLike.objects\
+        .filter(pet_photo_id=pk)\
         .first())
     if pet_photo_like:
         # dislike
