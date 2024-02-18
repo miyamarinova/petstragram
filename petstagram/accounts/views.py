@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from petstagram.common.views import index
+
 # Create your views here.
 # Callables:
 # - all functions
@@ -20,7 +20,7 @@ def signin_user(request):
     return render(request, template_name="accounts/signin_user.html", context=context)
 
 def logout(request):
-    return redirect("index")
+    pass
 
 
 def details_profile(request, pk):

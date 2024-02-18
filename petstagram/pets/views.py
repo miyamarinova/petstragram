@@ -47,7 +47,12 @@ class EditPetView(view.UpdateView):
         })
 
 class DetailsPetView(view.DetailView):
-    model = Pet # or queryset
+    #model = Pet
+    # or queryset
+    queryset = Pet.objects.all().prefetch_related("petphoto_set") \
+        .prefetch_related("petphoto_set__photolike_set")\
+        .prefetch_related("petphoto_set__pets")
+
     template_name = "pets/pet-details-page.html"
     context_object_name = "pet"
     # slug_field = "pet_slug" name of field in Model
@@ -56,22 +61,25 @@ class DetailsPetView(view.DetailView):
 class DeletePetView(view.DeleteView):
     model = Pet
     form_class = PetDeleteForm
-
     template_name = "pets/pet-delete-page.html"
-
     slug_url_kwarg = "pet_slug"
     success_url = reverse_lazy("index")
 
     extra_context = {
         "username": "mimi",
     }
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["instance"] = self.object
+        return kwargs
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
 
-        form = self.form_class(instance=self.object)
-        context["form"] = form
-        return context
+   # def get_context_data(self, **kwargs):
+#    context = super().get_context_data(**kwargs)
+#
+ #       form = self.form_class(instance=self.object)
+  #      context["form"] = form
+   #     return context
 
 
 """

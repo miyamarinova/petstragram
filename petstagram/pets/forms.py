@@ -41,7 +41,6 @@ class PetDeleteForm(ReadOnlyFieldsForMixin, PetBaseForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-
     def save(self, commit=True):
         if commit:
             self.instance.delete()

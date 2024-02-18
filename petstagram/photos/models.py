@@ -21,14 +21,12 @@ class MaxFileSizeValidator(BaseValidator):
     def compare(self, file_size, max_size):
         return max_size < file_size
 
-
 def validate_image_size_less_than_5mb(value):
     # invalid:
     if value.size > SIZE_5_MB:
         raise ValidationError('File size should be less than 5MB')
     # valid:
     # do nothing
-
 
 class PetPhoto(models.Model):
     MIN_DESCRIPTION_LENGTH = 10
