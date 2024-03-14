@@ -35,14 +35,14 @@
                     <li class="nav-item">
 
                         <!-- Link to Profile Page -->
-                        <a href="{% url 'details profile' pk=2 %}">
+                        <a href="{% url 'details profile' pk=request.user.pk %}">
                             <i>Profile</i>
                         </a>
                     </li>
                     <li class="nav-item">
 
                         <!-- Log out -->
-                        <a href="">
+                        <a href="{% url 'logout' %}">
                             <i>Log out</i>
                         </a>
                     

@@ -8,33 +8,40 @@
         <div class="profile-data">
           <div class="profile_img">
             <div class="image">
+                {% if object.profile.picture %}
               <!-- Profile Image -->
-              <img src="{% static '/images/person.png' %}" alt="img8" />
+              <img src="{% object.profile_picture.url %}" alt="img8" />
+                {% else %}
+                 <img src="{% static '/images/person.png' %}" alt="img8" />
+                {% endif %}
             </div>
           </div>
           <div class="personal">
             <div class="edit">
               <!-- User Username -->
-              <p>d_kalaydzhiev</p>
+              <p>{{ profile.user.email }}</p>
 
               <!-- IF the viewer is the owner of the profile -->
               <!-- Link to Edit Profile Page -->
-              <a href="#">
+                {% if object.pk == request.user.pk %}
+              <a href="{% url 'profile edit' pk=request.user.pk %}">
                 <img
                   class="edit-img"
                   src="{% static '/images/edit-pen-icon-6.jpg' %}"
                   alt="edit button"
                 />
               </a>
-
+                {% endif %}
               <!-- Link to Delete Profile Page -->
-              <a href="">
+             {% if object.pk == request.user.pk %}
+              <a href="{% url 'delete profile' pk=request.user.pk %}">
                 <img
                   class="bin-img"
                   src="{% static '/images/icon-remove-22.jpg' %}"
                   alt="bin button"
                 />
               </a>
+            {% endif %}
               <!-- End IF the viewer is the owner of the profile -->
             </div>
             <div class="data">
