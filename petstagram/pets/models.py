@@ -1,8 +1,13 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.text import slugify
 
+from petstagram.core.models import IHaveUser
+
+UserModel = get_user_model()
 # Create your models here.
-class Pet(models.Model):
+
+class Pet(IHaveUser, models.Model):
     MAX_NAME_LENGTH = 30
     MAX_PET_PHOTO_LENGTH = 500
 
@@ -37,4 +42,8 @@ class Pet(models.Model):
             self.slug = slugify(f'{self.name}-{self.pk}')
         super().save(*args, **kwargs)
 
+    user = models.ForeignKey(
+        UserModel,
+        on_delete=models.RESTRICT,
+    )
 

@@ -8,6 +8,8 @@ class PetstagramUserCreationForm(auth_forms.UserCreationForm):
         model = UserModel
         fields = ('email', )
 
-    def save(self, *args, **kwargs):
-        self.user = super().save(*args, **kwargs)
-        return self.user
+# change te user from django/admin
+class PetstagramChangeForm(auth_forms.UserChangeForm):
+    class Meta(auth_forms.UserChangeForm.Meta):
+        model = UserModel
+

@@ -53,17 +53,11 @@ class IndexView(views.ListView):
 
         if pet_name_pattern:
             filter_query['pets__name__icontains'] = pet_name_pattern
-
         return queryset.filter(**filter_query)
 
-
 def like_pet_photo(request, pk):
-    #pet_photo = PetPhoto.objects.get(pk=pk, user=request.user)
-    #pet_photo = PetPhoto.objects.get(pk=pk)
+    pet_photo_like = PhotoLike.objects.filter(pet_photo_id=pk).first()
 
-    pet_photo_like = (PhotoLike.objects\
-        .filter(pet_photo_id=pk)\
-        .first())
     if pet_photo_like:
         # dislike
         pet_photo_like.delete()

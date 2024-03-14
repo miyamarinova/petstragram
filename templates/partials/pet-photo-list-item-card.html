@@ -7,14 +7,20 @@
                 <div class="profilepic">
                     <div class="profile_img">
                         <div class="image">
-                            <img src="{% static 'images/person.png' %}" alt="img8">
+                            {% if photo.user.progile.profile_picture %}
+                            
+                                <img src="{{ photo.user.profile.profile_picture }}" alt="img8">
+                            {% else %}
+                            <img src="{% static 'images/person.org' %}" alt="img8">
+                            {% endif %}
+                        
                         </div>
                     </div>
                 </div>
             </a>
             <h3>
-                <a href="{% url 'details profile' pk=1 %}">
-                   Maria-Yoana
+                <a href="{% url 'details profile' photo.user.pk %}">
+                  
                 </a>
                 <br>
                 <span>{{ photo.location }}</span>
@@ -28,12 +34,12 @@
         <div class="actionBtns">
             <div class="left">
                 <span class="heart">
-                    <a href="{% url 'like_pet_photo' pk=photo.pk %}">
+                   <a href="{% url 'like_pet_photo' pk=1 %}">
                         {% if photo.photolike_set.count > 0 %}
                             <i class="fa-solid fa-heart" style="color: #ed4040;"></i>
                         {% else %}
                             <i class="fa-regular fa-heart"></i>
-                        {% endif %}
+                        {% endif %} 
                     </a>
                 </span>
                 <a href="#">
@@ -52,7 +58,7 @@
             </a>
         {% endfor %}
 
-        <a href="{% url 'details photo' pk=photo.pk %}">
+        <a href="{% url 'details photo' pk=1 %}">
             <h4 class="details">See details</h4>
         </a>
 
