@@ -18,7 +18,7 @@
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
     <data-source source="LOCAL" name="petstagram" uuid="0c8404da-8efc-4afc-bbd3-296b4c59ef59">
-      <driver-ref>sqlite.xerial</driver-ref>
+      <driver-ref>d05024ed-9580-44bb-81be-d8a7c38c3e6e</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/petstagram.sqlite3</jdbc-url>

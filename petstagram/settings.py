@@ -10,7 +10,10 @@ SECRET_KEY = "django-insecure-h80@s92%21e^5e+_yib)m3h(b+y+lq#czu**g(+jz8!$^0c+4y
 
 DEBUG = os.environ.get("DEBUG", 1)
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost").split(" ")
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
+
+ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS if host.strip()]
+
 CSRF_TRUSTED_ORIGINS = [f'https://{host}' for host in ALLOWED_HOSTS]
 
 INSTALLED_APPS = [
