@@ -19,3 +19,4 @@ requests==2.31.0
 soupsieve==2.5
 sqlparse==0.4.4
 urllib3==2.2.1
+Django==3.2.5git
