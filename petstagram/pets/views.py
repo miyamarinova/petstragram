@@ -1,12 +1,15 @@
 from urllib import request
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core import exceptions
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import generic as views
+
+from petstagram.accounts.views import OwnerRequiredMixin
 from petstagram.pets.forms import PetCreateForm, PetEditForm, PetDeleteForm
 from petstagram.pets.models import Pet
 from django.contrib.auth import mixins as auth_mixins
-class PetCreateView(views.CreateView):
+class PetCreateView(LoginRequiredMixin,views.CreateView):
     # `model` and `fields` in `CreateView` are only needed to
     # create a form with `modelform_factory`
     # model = Pet
@@ -14,19 +17,9 @@ class PetCreateView(views.CreateView):
     form_class = PetCreateForm
     template_name = "pets/pet-add-page.html"
 
-class OwnerRequiredMixin:
-    user_field = "user"
-    def get_object(self, queryset=None):
-        obj = super().get_object(queryset=queryset)
-        obj_user = getattr(obj, self.user_field, None)
-
-        if not self.request.user.is_authenticated or obj_user != self.request.user:
-            raise exceptions.PermissionDenied
-        return obj
-
     def get_success_url(self):
         return reverse("details pet", kwargs={
-            "username": "mimi",
+            "username": self.object.user.email,
             "pet_slug": self.object.slug,
         })
     def get_form(self,form_class=None):
@@ -34,12 +27,12 @@ class OwnerRequiredMixin:
         form.instance.user = self.request.user
         return form
 
-
 class PetEditView(OwnerRequiredMixin, views.UpdateView):
     model = Pet  # queryset = Pet.objects.all()
     form_class = PetEditForm
     template_name = "pets/pet-edit-page.html"
     slug_url_kwarg = "pet_slug"
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["username"] = "mimi"
@@ -50,7 +43,6 @@ class PetEditView(OwnerRequiredMixin, views.UpdateView):
             "username": "Mimi",
             "pet_slug": self.object.slug,
         })
-
 
 class PetDetailView(auth_mixins.LoginRequiredMixin, views.DetailView):
     # TODO: fix bad queries

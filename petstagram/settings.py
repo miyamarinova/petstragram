@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from django.urls import reverse_lazy
@@ -7,12 +8,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = "django-insecure-h80@s92%21e^5e+_yib)m3h(b+y+lq#czu**g(+jz8!$^0c+4y"
 
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", 1)
 
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-         ]
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost").split(" ")
+CSRF_TRUSTED_ORIGINS = [f'https://{host}' for host in ALLOWED_HOSTS]
 
 INSTALLED_APPS = [
     # Django apps
@@ -138,3 +137,10 @@ LOGGING = {
 AUTH_USER_MODEL = 'accounts.PetstagramUser'
 LOGIN_REDIRECT_URL = reverse_lazy('index')
 LOGIN_URL = reverse_lazy('signin user')
+
+EMAIL_HOST = "in-v3.mailjet.com"
+EMAIL_PORT = 587
+EMAIL_USE_TSL = True
+EMAIL_HOST_USER = "4df7f789028209c2f042763fb25d1228"
+EMAIL_HOST_PASSWORD = "19c9b7c22033822e4af5e4fc6ddc2ef9"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

@@ -23,9 +23,10 @@ from django.views import generic as views
 #    return render(request, template_name="common/home-page.html", context=context)
 
 class IndexView(views.ListView):
-    queryset = PetPhoto.objects.all() \
+    queryset = (PetPhoto.objects.all()
+        .order_by("-created_at") \
         .prefetch_related("pets") \
-        .prefetch_related("photolike_set")
+        .prefetch_related("photolike_set"))
 
     template_name = "common/home-page.html"
 
@@ -41,7 +42,6 @@ class IndexView(views.ListView):
         return context
     def get_queryset(self):
         queryset = super().get_queryset()
-
         queryset = self.filter_by_pet_name_pattern(queryset)
 
         return queryset

@@ -1,5 +1,6 @@
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.core.mail import send_mail
 from django.urls import path, include
 
 from petstagram import settings
@@ -15,3 +16,12 @@ urlpatterns = [
 # Show the Uploaded Images
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+send_mail(
+    subject="It works",
+    message="It works without HTML",
+    from_email="miyamarinova@gmail.com",
+    recipient_list=["kowevo6436@facais.com"],
+    html_message="<h1>It works with HTML!</h1>",
+    fail_silently=False,
+)
