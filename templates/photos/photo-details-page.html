@@ -4,7 +4,7 @@
 <!-- Starts Main Section -->
     <div class="container">
         <div class="col-9">
-        <a href="{% url "edit photo" pk=object.pk %}">Edit</a>
+        <a href="{% url 'edit photo' photo.pk %}">Edit</a>
             {% include 'partials/pet-photo-list-item-card.html' with photo=object %}
             <p class="pet-details">{{ object.description }}</p>
 
@@ -23,7 +23,7 @@
                                     </div>
                                 </div>
                                 <p>
-                                    <a href="{% url 'details profile' pk=1 %}">Maria-Yoana</a>
+                                    <a href="{% url 'details profile' photo.pk %}">Details</a>
                                     <!-- User Comment -->
                                      {{ comment.text }}
                                 </p>

@@ -6,7 +6,6 @@ from petstagram.photos.models import PetPhoto
 UserModel = get_user_model()
 class PhotoComment(models.Model):
     MAX_LENGTH = 300
-
     text = models.TextField(
         max_length=MAX_LENGTH,
         null=False,
@@ -20,11 +19,12 @@ class PhotoComment(models.Model):
     modified_at = models.DateTimeField(
         auto_now_add=True,
     )
-
     pet_photo = models.ForeignKey(
         PetPhoto,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
     )
+    class Meta:
+        ordering = ['-created_at']
 
     # user -> ForeignKey to users
     user = models.ForeignKey(
@@ -35,7 +35,7 @@ class PhotoComment(models.Model):
 class PhotoLike(models.Model):
     pet_photo = models.ForeignKey(
         PetPhoto,
-        on_delete=models.RESTRICT,
+        on_delete=models.CASCADE,
     )
     # user -> ForeignKey to users
     user = models.ForeignKey(

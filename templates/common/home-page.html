@@ -10,6 +10,8 @@
 
             <!-- Start Searchbar Form -->
             <form class="searchbar" action="{% url 'index' %}" method="get">
+                {% csrf_token %}
+                {{ search_form }}
                 <input type="text" name="pet_name_pattern" placeholder="Search by pet name..." 
                        value="{{ pet_name_pattern }}">
                 
@@ -30,7 +32,6 @@
                 </span>
 
                 <span class="step-links-buttons">
-                
                     {% prev_button %}
                     {% next_button %}
                 </span>

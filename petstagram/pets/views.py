@@ -6,14 +6,11 @@ from django.urls import reverse_lazy, reverse
 from django.views import generic as views
 
 from petstagram.accounts.views import OwnerRequiredMixin
+from petstagram.common.forms import CommentForm
 from petstagram.pets.forms import PetCreateForm, PetEditForm, PetDeleteForm
 from petstagram.pets.models import Pet
 from django.contrib.auth import mixins as auth_mixins
 class PetCreateView(LoginRequiredMixin,views.CreateView):
-    # `model` and `fields` in `CreateView` are only needed to
-    # create a form with `modelform_factory`
-    # model = Pet
-    # fields = ("name", "date_of_birth", "pet_photo")
     form_class = PetCreateForm
     template_name = "pets/pet-add-page.html"
 
@@ -45,16 +42,15 @@ class PetEditView(OwnerRequiredMixin, views.UpdateView):
         })
 
 class PetDetailView(auth_mixins.LoginRequiredMixin, views.DetailView):
-    # TODO: fix bad queries
-    # model = Pet  # or `queryset`
-    queryset = Pet.objects.all() \
-        .prefetch_related("petphoto_set") \
-        .prefetch_related("petphoto_set__photolike_set") \
-        .prefetch_related("petphoto_set__pets")
-
+    model = Pet
     template_name = "pets/pet-details-page.html"
-    # slug_field = "pet_slug" # name of field in Model
+    context_object_name = 'pet'
     slug_url_kwarg = "pet_slug"  # name of param in URL
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['all_photos'] = self.object.photo_set_all()
+        context['comment_form'] = CommentForm()
 
 class PetDeleteView(OwnerRequiredMixin, views.DeleteView):
     model = Pet

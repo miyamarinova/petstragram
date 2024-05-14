@@ -1,19 +1,16 @@
 from django.shortcuts import render
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import generic as views
 from django.contrib.auth import mixins as auth_mixins
-
 from petstagram.pets.views import OwnerRequiredMixin
 from petstagram.photos.forms import PetPhotoCreateForm, PetPhotoEditForm
 from petstagram.photos.models import PetPhoto
-
 
 class PetPhotoCreateView(auth_mixins.LoginRequiredMixin, views.CreateView):
     form_class = PetPhotoCreateForm
     template_name = "photos/photo-add-page.html"
     queryset = PetPhoto.objects.all() \
         .prefetch_related("pets")
-
     def get_success_url(self):
         return reverse("details photo", kwargs={
             "pk": self.object.pk,
@@ -23,24 +20,17 @@ class PetPhotoCreateView(auth_mixins.LoginRequiredMixin, views.CreateView):
         form.instance.user = self.request.user
         return form
 
-
 class PetPhotoDetailView(OwnerRequiredMixin, views.DetailView):
-    queryset = PetPhoto.objects.all() \
-        .prefetch_related("photolike_set") \
-        .prefetch_related("photocomment_set") \
-        .prefetch_related("pets")
-
+    model = PetPhoto
     template_name = "photos/photo-details-page.html"
-
+    context_object_name = "photo"
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.prefetch_related("photolike_set", "photocomment_set", "pets")
 
 class PetPhotoEditView(OwnerRequiredMixin, views.UpdateView):
-    queryset = PetPhoto.objects.all() \
-        .prefetch_related("pets")
-
+    queryset = PetPhoto
     template_name = "photos/photo-edit-page.html"
     form_class = PetPhotoEditForm
+    success_url = reverse_lazy("details photo")
 
-    def get_success_url(self):
-        return reverse("details photo", kwargs={
-            "pk": self.object.pk,
-        })

@@ -5,17 +5,13 @@ from django.contrib.auth.hashers import make_password
 
 class PetstagramUserManager(BaseUserManager):
     use_in_migrations = True
-
     def _create_user(self, email, password, **extra_fields):
         """
         Create and save a user with the given username, email, and password.
         """
         if not email:
-            raise ValueError("The given username must be set")
+            raise ValueError("The given email must be set")
         email = self.normalize_email(email)
-        # Lookup the real model class from the global app registry so this
-        # manager method can be used in migrations. This is fine because
-        # managers are by definition working on the real model.
         GlobalUserModel = apps.get_model(
             self.model._meta.app_label, self.model._meta.object_name
         )
@@ -39,7 +35,7 @@ class PetstagramUserManager(BaseUserManager):
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("Superuser must have is_superuser=True.")
 
-        return self._create_user(email,password, **extra_fields)
+        return self._create_user(email, password, **extra_fields)
 
     def with_perm(
         self, perm, is_active=True, include_superusers=True, backend=None, obj=None
