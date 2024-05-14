@@ -5,14 +5,10 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from petstagram.accounts.managers import PetstagramUserManager
 
-
-# Create your models here.
-
 class PetstagramUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
     # password and last_login from 'AbstractBaseUser'
-
     email = models.EmailField(
-        _("email"),
+        _("email address"),
         unique=True,
         error_messages={
             "unique": _("A user with that username already exists."),
@@ -26,7 +22,6 @@ class PetstagramUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin)
     is_active = models.BooleanField(
         default=True,
     )
-
     USERNAME_FIELD = "email"
 
     objects = PetstagramUserManager()
