@@ -17,11 +17,3 @@ urlpatterns = [
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-send_mail(
-    subject="It works",
-    message="It works without HTML",
-    from_email="miyamarinova@gmail.com",
-    recipient_list=["kowevo6436@facais.com"],
-    html_message="<h1>It works with HTML!</h1>",
-    fail_silently=False,
-)

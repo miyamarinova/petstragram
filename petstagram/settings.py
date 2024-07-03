@@ -1,14 +1,13 @@
 import os
 from pathlib import Path
-
 from django.urls import reverse_lazy
+import dj_database_url
 
 # `BASE_DIR` should always point to the `manage.py` directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
-
-
+IS_RENDER = 'RENDER' in os.environ
 DEBUG = False 
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'petstragram-miyamarinova.onrender.com,*.onrender.com,localhost,127.0.0.1').split(',')
@@ -67,27 +66,21 @@ WSGI_APPLICATION = "petstagram.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-if DEBUG:
-    DATABASES = {
+#
+#if DEBUG:
+DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "petstagram.sqlite3",
     }
 }
+#else:
+DATABASES["default"]=dj_database_url.parse("postgresql://petstagram_user:mS1vZUYUr4Di1TCfrXafmgKPnuve9lF2@dpg-cq2cv6tds78s73ec3ke0-a.oregon-postgres.render.com/petstagram")
 
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": os.environ.get("POSTGRES_DB"),
-            "USER": os.environ.get("POSTGRES_USER"),
-            "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-            "HOST": os.environ.get("POSTGRES_HOST"),
-            "PORT": os.environ.get("POSTGRES_PORT"),
-        }
-    }
+   
+   
 AUTH_PASSWORD_VALIDATORS = [
+    
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
