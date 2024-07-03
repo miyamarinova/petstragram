@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 IS_RENDER = 'RENDER' in os.environ
-DEBUG = False 
+DEBUG = os.environ.get("ALLOWED_HOSTS").split(",")
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'petstragram-miyamarinova.onrender.com,*.onrender.com,localhost,127.0.0.1').split(',')
 CSRF_TRUSTED_ORIGINS = [f'https://{host}' for host in ALLOWED_HOSTS if host]
@@ -75,9 +75,8 @@ DATABASES = {
     }
 }
 #else:
-DATABASES["default"]=dj_database_url.parse("postgresql://petstagram_user:mS1vZUYUr4Di1TCfrXafmgKPnuve9lF2@dpg-cq2cv6tds78s73ec3ke0-a.oregon-postgres.render.com/petstagram")
-
-   
+database_url = os.environ.get("DATABASE_URL")
+DATABASES["default"]=dj_database_url.parse(database_url)
    
 AUTH_PASSWORD_VALIDATORS = [
     
@@ -98,8 +97,6 @@ AUTH_PASSWORD_VALIDATORS = [
 if DEBUG:
     AUTH_PASSWORD_VALIDATORS = []
 
-
-
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
@@ -109,7 +106,7 @@ USE_I18N = True
 USE_TZ = True
 
 # URL prefix in the client
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 
 # Directories on the file system
 STATICFILES_DIRS = (
