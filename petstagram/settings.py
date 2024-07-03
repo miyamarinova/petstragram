@@ -3,13 +3,11 @@ from pathlib import Path
 from django.urls import reverse_lazy
 import dj_database_url
 
-# `BASE_DIR` should always point to the `manage.py` directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 IS_RENDER = 'RENDER' in os.environ
-DEBUG = os.environ.get("ALLOWED_HOSTS").split(",")
-
+DEBUG = os.environ.get('DEBUG', 'False').lower() in ['true', '1', 't']
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'petstragram-miyamarinova.onrender.com,*.onrender.com,localhost,127.0.0.1').split(',')
 CSRF_TRUSTED_ORIGINS = [f'https://{host}' for host in ALLOWED_HOSTS if host]
 
@@ -17,17 +15,12 @@ if 'localhost' in ALLOWED_HOSTS or '127.0.0.1' in ALLOWED_HOSTS:
     CSRF_TRUSTED_ORIGINS += ['http://localhost', 'http://127.0.0.1']
 
 INSTALLED_APPS = [
-    # Django apps
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
-    # Third-party apps
-
-    # Project apps
     "petstagram.common",
     "petstagram.accounts",
     "petstagram.photos",
@@ -36,6 +29,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # Add Whitenoise middleware
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -64,22 +58,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "petstagram.wsgi.application"
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-#
-#if DEBUG:
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "petstagram.sqlite3",
     }
 }
-#else:
+
 database_url = os.environ.get("DATABASE_URL")
-DATABASES["default"]=dj_database_url.parse(database_url)
-   
+if database_url:
+    DATABASES["default"] = dj_database_url.parse(database_url)
+
 AUTH_PASSWORD_VALIDATORS = [
-    
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
@@ -98,25 +88,18 @@ if DEBUG:
     AUTH_PASSWORD_VALIDATORS = []
 
 LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = "UTC"
-
 USE_I18N = True
-
 USE_TZ = True
 
-# URL prefix in the client
 STATIC_URL = "/static/"
-
-# Directories on the file system
-STATICFILES_DIRS = (
-    BASE_DIR / "staticfiles",
-)
-
+STATICFILES_DIRS = [BASE_DIR / "staticfiles"]
 STATIC_ROOT = BASE_DIR / "static"
-MEDIA_ROOT = BASE_DIR / 'mediafiles'
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / 'mediafiles'
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGGING = {
@@ -144,4 +127,3 @@ LOGGING = {
 AUTH_USER_MODEL = 'accounts.PetstagramUser'
 LOGIN_REDIRECT_URL = reverse_lazy('index')
 LOGIN_URL = reverse_lazy('signin user')
-
